@@ -1,0 +1,27 @@
+FROM ubuntu:16.04
+
+RUN apt-get update -y ; \
+    apt-get install software-properties-common -y ; \
+    add-apt-repository ppa:ondrej/php -y ; \
+    apt-get update ; \
+    apt-get install -y --allow-unauthenticated \
+        apache2 \
+        php5.6 \
+        php5.6-mcrypt \
+        php5.6-mbstring \
+        php5.6-curl \
+        php5.6-cli \
+        php5.6-mysql \
+        php5.6-gd \
+        php5.6-intl \
+        php5.6-xsl \
+        php5.6-zip \
+        libapache2-mod-php5.6
+
+RUN a2enmod actions rewrite headers php5.6
+
+COPY service_restart.sh /root/service_restart.sh
+
+RUN chmod +x /root/service_restart.sh
+
+CMD /bin/sh -c "/root/service_restart.sh"
